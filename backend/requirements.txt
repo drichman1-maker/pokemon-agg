@@ -1,0 +1,7 @@
+Flask
+flask-cors
+pokemontcgsdk
+ebaysdk
+playwright
+playwright-stealth
+beautifulsoup4

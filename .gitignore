@@ -1,0 +1,41 @@
+# .gitignore for Pokemon Card Aggregator
+
+# Backend (Python)
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.Python
+backend/env/
+backend/venv/
+backend/.env
+backend/*.log
+
+# Web Frontend (React)
+web-frontend/node_modules/
+web-frontend/build/
+web-frontend/.env
+web-frontend/.env.local
+web-frontend/.env.development.local
+web-frontend/.env.test.local
+web-frontend/.env.production.local
+web-frontend/npm-debug.log*
+web-frontend/yarn-debug.log*
+web-frontend/yarn-error.log*
+
+# iOS App (Xcode)
+ios-app/*.xcodeproj/xcuserdata/
+ios-app/*.xcworkspace/xcuserdata/
+ios-app/DerivedData/
+ios-app/build/
+ios-app/*.ipa
+ios-app/*.dSYM.zip
+ios-app/*.dSYM
+
+# General
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
