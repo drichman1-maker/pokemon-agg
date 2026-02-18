@@ -7,12 +7,12 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://pokemon-agg.onren
 const GRADING_COMPANIES = ['PSA', 'BGS', 'CGC', 'SGC', 'TAG', 'ACE', 'PCA'];
 
 const sampleFeatured = [
-  { name: 'Charizard', set: 'Base Set', avg_price: 2900, price_change: 15.2, image_url: 'https://images.pokemontcg.io/base1/4_hires.png' },
-  { name: 'Pikachu', set: 'Base Set', avg_price: 245, price_change: 8.1, image_url: 'https://images.pokemontcg.io/base1/25_hires.png' },
-  { name: 'Mewtwo', set: 'Base Set', avg_price: 1200, price_change: -3.4, image_url: 'https://images.pokemontcg.io/base1/96_hires.png' },
-  { name: 'Blastoise', set: 'Base Set', avg_price: 880, price_change: 5.7, image_url: 'https://images.pokemontcg.io/base1/9_hires.png' },
-  { name: 'Venusaur', set: 'Base Set', avg_price: 714, price_change: 2.3, image_url: 'https://images.pokemontcg.io/base1/3_hires.png' },
-  { name: 'Gyarados', set: 'Base Set', avg_price: 490, price_change: -1.2, image_url: 'https://images.pokemontcg.io/base1/130_hires.png' },
+  { name: 'Charizard', set: 'Base Set', avg_price: 2900, price_change: 15.2, image_url: 'https://images.pokemontcg.io/base1/4.png' },
+  { name: 'Pikachu', set: 'Base Set', avg_price: 245, price_change: 8.1, image_url: 'https://images.pokemontcg.io/base1/25.png' },
+  { name: 'Mewtwo', set: 'Base Set', avg_price: 1200, price_change: -3.4, image_url: 'https://images.pokemontcg.io/base1/96.png' },
+  { name: 'Blastoise', set: 'Base Set', avg_price: 880, price_change: 5.7, image_url: 'https://images.pokemontcg.io/base1/9.png' },
+  { name: 'Venusaur', set: 'Base Set', avg_price: 714, price_change: 2.3, image_url: 'https://images.pokemontcg.io/base1/3.png' },
+  { name: 'Gyarados', set: 'Base Set', avg_price: 490, price_change: -1.2, image_url: 'https://images.pokemontcg.io/base1/130.png' },
 ];
 
 function App() {
