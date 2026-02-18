@@ -27,11 +27,14 @@ function App() {
   useEffect(() => {
     axios.get(`${API_BASE_URL}/featured`)
       .then(res => {
-        if (res.data.featured && res.data.featured.length > 0) {
+        // Only update if we get valid data
+        if (res.data?.featured?.length > 0) {
           setFeaturedCards(res.data.featured);
         }
       })
-      .catch(err => console.error('Failed to load featured:', err));
+      .catch(err => {
+        console.log('Using sample data - API not available');
+      });
   }, []);
 
   const handleSearch = async (e) => {
