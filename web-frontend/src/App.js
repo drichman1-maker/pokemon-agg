@@ -7,12 +7,12 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://pokemon-agg.onren
 const GRADING_COMPANIES = ['PSA', 'BGS', 'CGC', 'SGC', 'TAG', 'ACE', 'PCA'];
 
 const sampleFeatured = [
-  { name: 'Charizard', set: 'Base Set', avg_price: 2900, price_change: 15.2, image_url: 'https://images.pokemontcg.io/base1/4.png' },
-  { name: 'Pikachu', set: 'Base Set', avg_price: 245, price_change: 8.1, image_url: 'https://images.pokemontcg.io/base1/25.png' },
-  { name: 'Mewtwo', set: 'Base Set', avg_price: 1200, price_change: -3.4, image_url: 'https://images.pokemontcg.io/base1/96.png' },
-  { name: 'Blastoise', set: 'Base Set', avg_price: 880, price_change: 5.7, image_url: 'https://images.pokemontcg.io/base1/9.png' },
-  { name: 'Venusaur', set: 'Base Set', avg_price: 714, price_change: 2.3, image_url: 'https://images.pokemontcg.io/base1/3.png' },
-  { name: 'Gyarados', set: 'Base Set', avg_price: 490, price_change: -1.2, image_url: 'https://images.pokemontcg.io/base1/130.png' },
+  { name: 'Charizard', set: 'Base Set', avg_price: 2900, price_change: 15.2, color: 'from-orange-500 to-red-600' },
+  { name: 'Pikachu', set: 'Base Set', avg_price: 245, price_change: 8.1, color: 'from-yellow-400 to-yellow-600' },
+  { name: 'Mewtwo', set: 'Base Set', avg_price: 1200, price_change: -3.4, color: 'from-purple-500 to-purple-700' },
+  { name: 'Blastoise', set: 'Base Set', avg_price: 880, price_change: 5.7, color: 'from-blue-500 to-blue-700' },
+  { name: 'Venusaur', set: 'Base Set', avg_price: 714, price_change: 2.3, color: 'from-green-500 to-green-700' },
+  { name: 'Gyarados', set: 'Base Set', avg_price: 490, price_change: -1.2, color: 'from-cyan-500 to-blue-600' },
 ];
 
 function App() {
@@ -181,13 +181,9 @@ function App() {
                     onClick={() => { setQuery(card.name); setActiveTab('results'); }}
                   >
                     <div className="relative mb-3">
-                      {card.image_url && (
-                        <img 
-                          src={card.image_url} 
-                          alt={card.name} 
-                          className="w-full h-32 object-contain group-hover:scale-105 transition-transform duration-300" 
-                        />
-                      )}
+                      <div className={`w-full h-32 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center shadow-lg`}>
+                        <span className="text-4xl font-bold text-white/90">{card.name.charAt(0)}</span>
+                      </div>
                       <div className={`absolute -top-2 -right-2 badge ${
                         (card.price_change || 0) >= 0 ? 'badge-up' : 'badge-down'
                       }`}>
