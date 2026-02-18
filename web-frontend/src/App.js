@@ -77,9 +77,9 @@ function App() {
             </div>
           </div>
           <nav className="flex gap-4 text-sm text-gray-400">
-            <a href="#" className="hover:text-cyan-400 transition">API Data</a>
-            <a href="#" className="hover:text-cyan-400 transition">Community</a>
-            <a href="#" className="hover:text-cyan-400 transition">Privacy</a>
+            <span className="cursor-pointer hover:text-cyan-400 transition">API Data</span>
+            <span className="cursor-pointer hover:text-cyan-400 transition">Community</span>
+            <span className="cursor-pointer hover:text-cyan-400 transition">Privacy</span>
           </nav>
         </div>
       </header>
