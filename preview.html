@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeAggregator — Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #06b6d4;
+            --blue: #3b82f6;
+            --indigo: #6366f1;
+            --green: #22c55e;
+            --orange: #f97316;
+            --purple: #a855f7;
+            --dark-900: #111827;
+            --dark-800: #1f2937;
+            --dark-700: #374151;
+            --dark-600: #4b5563;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark-900) 0%, var(--dark-800) 50%, #000 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px);
+            background-size: 4rem 4rem;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Radial Glow */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: 30%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: relative;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.05);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #22d3ee, #3b82f6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+            }
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #fff, #a5f3fc, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text p {
+            font-size: 0.7rem;
+            color: rgba(6, 182, 212, 0.8);
+            font-family: monospace;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* --- MAIN --- */
+        main {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* --- SEARCH --- */
+        .search-wrapper {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-glow {
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(to right, var(--cyan), var(--blue));
+            border-radius: 18px;
+            filter: blur(8px);
+            opacity: 0.25;
+            transition: opacity 0.5s;
+        }
+
+        .search-wrapper:hover .search-glow {
+            opacity: 0.5;
+        }
+
+        .search-bar {
+            position: relative;
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-input-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            color: var(--cyan);
+            font-size: 1.2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .search-input::placeholder {
+            color: #6b7280;
+        }
+
+        .search-btn {
+            padding: 0.75rem 2rem;
+            background: linear-gradient(to right, var(--cyan), var(--blue));
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.5);
+            transform: scale(1.02);
+        }
+
+        /* --- TABS --- */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 0.6rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: #9ca3af;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: #d1d5db;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab.active {
+            background: var(--cyan);
+            color: #fff;
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        /* --- VIEW CONTAINERS --- */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- FEATURED CARDS GRID --- */
+        .featured-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .featured-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #22d3ee, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-header p {
+            color: #9ca3af;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .featured-card {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .featured-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.2);
+        }
+
+        .featured-card img {
+            width: 100%;
+            aspect-ratio: 2.5/3.5;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            transition: transform 0.5s;
+        }
+
+        .featured-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .featured-card h3 {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            transition: color 0.2s;
+        }
+
+        .featured-card:hover h3 {
+            color: var(--cyan);
+        }
+
+        .featured-card .set-name {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .featured-card .price-info {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .featured-card .latest-price {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--cyan);
+            font-family: monospace;
+        }
+
+        .featured-card .trend {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .trend.up {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--green);
+        }
+
+        .trend.down {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        /* --- SEARCH RESULTS LAYOUT --- */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- SIDEBAR CARDS --- */
+        .sidebar-card {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-card .card-inner {
+            padding: 1.5rem;
+        }
+
+        .sidebar-card .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-card .section-title .icon {
+            color: var(--cyan);
+        }
+
+        /* Card Intel */
+        .card-image-wrap {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-image-wrap img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+        }
+
+        .card-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-set {
+            color: var(--cyan);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .card-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+
+        .meta-label {
+            font-size: 0.65rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .meta-value {
+            font-family: monospace;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .release-badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: #67e8f9;
+        }
+
+        /* Market Pulse */
+        .grade-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(55, 65, 81, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .grade-row:hover {
+            background: rgba(55, 65, 81, 0.4);
+        }
+
+        .grade-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .grade-val.g10 {
+            color: #facc15;
+        }
+
+        .grade-val.g95 {
+            color: #d1d5db;
+        }
+
+        .grade-val.g9 {
+            color: #d1d5db;
+        }
+
+        .grade-val.g85 {
+            color: #fb923c;
+        }
+
+        .grade-val.g8 {
+            color: #fb923c;
+        }
+
+        .grade-price {
+            font-family: monospace;
+            font-weight: 700;
+        }
+
+        .grade-count {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+
+        .ebay-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #6b7280;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Source Comparison */
+        .source-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .source-link:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .source-link .source-name {
+            font-weight: 700;
+            color: #d1d5db;
+            transition: color 0.2s;
+        }
+
+        .source-link.stockx:hover .source-name {
+            color: var(--green);
+        }
+
+        .source-link.stockx:hover {
+            border-color: rgba(34, 197, 94, 0.3);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .source-link.stockx .source-price {
+            font-family: monospace;
+            color: var(--green);
+        }
+
+        .source-link.tcg:hover .source-name {
+            color: var(--blue);
+        }
+
+        .source-link.tcg:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .source-link.tcg .source-price {
+            font-family: monospace;
+            color: var(--blue);
+        }
+
+        .source-link.pwcc:hover .source-name {
+            color: var(--orange);
+        }
+
+        .source-link.pwcc:hover {
+            border-color: rgba(249, 115, 22, 0.3);
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .source-link.pwcc .source-price {
+            font-family: monospace;
+            color: var(--orange);
+        }
+
+        /* --- FILTER BAR --- */
+        .filter-bar {
+            background: rgba(31, 41, 55, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 30;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chip {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #d1d5db;
+        }
+
+        .chip.active {
+            background: var(--cyan);
+            color: #fff;
+            border-color: #22d3ee;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .sort-chips {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.25rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sort-chip {
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #6b7280;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sort-chip:hover {
+            color: #d1d5db;
+        }
+
+        .sort-chip.active {
+            background: var(--indigo);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .filter-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .result-count {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .result-count strong {
+            color: #fff;
+        }
+
+        .grade-filters {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .grade-filter {
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #4b5563;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .grade-filter:hover {
+            color: #9ca3af;
+        }
+
+        .grade-filter.active {
+            color: var(--cyan);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        /* --- LISTING CARDS --- */
+        .listing-card {
+            position: relative;
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .listing-card:hover {
+            background: rgba(55, 65, 81, 0.5);
+            transform: scale(1.01);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .listing-card .glow-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            filter: blur(12px);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .listing-card.arbitrage .glow-overlay {
+            background: linear-gradient(to right, var(--indigo), var(--purple));
+        }
+
+        .listing-card.steal .glow-overlay {
+            background: linear-gradient(to right, var(--green), #10b981);
+        }
+
+        .listing-inner {
+            position: relative;
+            background: rgba(17, 24, 39, 0.6);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .listing-card .card-thumb {
+            width: 80px;
+            height: 110px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .grade-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 72px;
+            height: 72px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+            transition: border-color 0.2s;
+        }
+
+        .listing-card:hover .grade-badge {
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .grade-badge .grade-num {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .grade-badge .grade-co {
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .listing-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .listing-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge.arbitrage {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+        }
+
+        .badge.steal {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+        }
+
+        .listing-title {
+            font-size: 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s;
+        }
+
+        .listing-card:hover .listing-title {
+            color: var(--cyan);
+        }
+
+        .listing-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .listing-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .listing-price {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .listing-card:hover .listing-price {
+            color: #67e8f9;
+        }
+
+        .deal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .deal-btn:hover {
+            background: var(--cyan);
+            color: #000;
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            color: #4b5563;
+            font-size: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #6b7280;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+        footer a:hover {
+            color: var(--cyan);
+        }
+
+        /* --- PRICE CHART (Mock) --- */
+        .chart-container {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            height: 140px;
+            overflow: hidden;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 100%;
+            padding-top: 0.5rem;
+        }
+
+        .chart-bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .chart-bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            min-height: 8px;
+            transition: height 0.5s ease;
+        }
+
+        .chart-label {
+            font-size: 0.55rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .chart-value {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #d1d5db;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">
+                <h1>PokeAggregator</h1>
+                <p>Multi-Source Market Intelligence</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+        <!-- SEARCH -->
+        <div class="search-wrapper">
+            <div class="search-glow"></div>
+            <div class="search-bar">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input class="search-input" type="text"
+                        placeholder="Search Pokemon cards, sets, or market trends..." value="Charizard Base Set"
+                        id="searchInput">
+                </div>
+                <button class="search-btn" onclick="showView('results')">Hunt Deals</button>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <div class="tab active" onclick="showView('featured')" id="tab-featured">Featured Cards</div>
+            <div class="tab" onclick="showView('results')" id="tab-results">Search Results</div>
+        </div>
+
+        <!-- === FEATURED VIEW === -->
+        <div class="view active" id="view-featured">
+            <div class="featured-header">
+                <h2>Trending Collections</h2>
+                <p>Start your hunt with these popular cards tracked by our real-time market engine.</p>
+            </div>
+            <div class="featured-grid">
+                <div class="featured-card" onclick="showView('results')">
+                    <img src="https://images.pokemontcg.io/base1/4_hires.png" alt="Charizard">
+                    <h3>Charizard</h3>
+                    <div class="set-name">Base Set, 1st Edition</div>
+                    <div class="price-info">
+                        <span class="latest-price">$2,900.00</span>
+                        <span class="trend up">+15.2%</span>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="https://images.pokemontcg.io/base1/58_hires.png" alt="Pikachu">
+                    <h3>Pikachu</h3>
+                    <div class="set-name">Base Set</div>
+                    <div class="price-info">
+                        <span class="latest-price">$245.00</span>
+                        <span class="trend up">+8.1%</span>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="https://images.pokemontcg.io/base1/10_hires.png" alt="Mewtwo">
+                    <h3>Mewtwo</h3>
+                    <div class="set-name">Gold Star, Italian Phantoms</div>
+                    <div class="price-info">
+                        <span class="latest-price">$1,200.00</span>
+                        <span class="trend down">-3.4%</span>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="https://images.pokemontcg.io/base1/2_hires.png" alt="Blastoise">
+                    <h3>Blastoise</h3>
+                    <div class="set-name">Base Set, Shadowless</div>
+                    <div class="price-info">
+                        <span class="latest-price">$880.00</span>
+                        <span class="trend up">+5.7%</span>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="https://images.pokemontcg.io/base1/15_hires.png" alt="Venusaur">
+                    <h3>Venusaur</h3>
+                    <div class="set-name">Extra Variation, Rain Challenge</div>
+                    <div class="price-info">
+                        <span class="latest-price">$714.00</span>
+                        <span class="trend up">+2.3%</span>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="https://images.pokemontcg.io/base1/6_hires.png" alt="Gyarados">
+                    <h3>Gyarados</h3>
+                    <div class="set-name">Shining Gyarados, Neo Rev</div>
+                    <div class="price-info">
+                        <span class="latest-price">$490.00</span>
+                        <span class="trend down">-1.2%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === SEARCH RESULTS VIEW === -->
+        <div class="view" id="view-results">
+            <div class="results-grid">
+
+                <!-- SIDEBAR -->
+                <div>
+                    <!-- Card Intel -->
+                    <div class="sidebar-card">
+                        <div class="card-inner">
+                            <div
+                                style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+                                <div class="section-title" style="margin-bottom:0"><span class="icon">🎯</span> Asset
+                                    Intel</div>
+                                <span class="release-badge">Est. 1999</span>
+                            </div>
+                            <div class="card-image-wrap">
+                                <img src="https://images.pokemontcg.io/base1/4_hires.png" alt="Charizard">
+                            </div>
+                            <div class="card-name">Charizard</div>
+                            <div class="card-set">Base Set</div>
+                            <div class="card-meta-grid">
+                                <div>
+                                    <div class="meta-label">Number</div>
+                                    <div class="meta-value">4/102</div>
+                                </div>
+                                <div>
+                                    <div class="meta-label">Rarity</div>
+                                    <div class="meta-value">Rare Holo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Pulse -->
+                    <div class="sidebar-card">
+                        <div class="card-inner">
+                            <div
+                                style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+                                <div class="section-title" style="margin-bottom:0"><span class="icon">📊</span> Market
+                                    Pulse</div>
+                                <span class="ebay-badge">eBay 24h</span>
+                            </div>
+                            <div class="grade-row">
+                                <span class="grade-val g10">10.0</span>
+                                <div style="text-align:right">
+                                    <div class="grade-price">$18,450.00</div>
+                                    <div class="grade-count">12 sold</div>
+                                </div>
+                            </div>
+                            <div class="grade-row">
+                                <span class="grade-val g95">9.5</span>
+                                <div style="text-align:right">
+                                    <div class="grade-price">$4,200.00</div>
+                                    <div class="grade-count">28 sold</div>
+                                </div>
+                            </div>
+                            <div class="grade-row">
+                                <span class="grade-val g9">9.0</span>
+                                <div style="text-align:right">
+                                    <div class="grade-price">$2,150.00</div>
+                                    <div class="grade-count">45 sold</div>
+                                </div>
+                            </div>
+                            <div class="grade-row">
+                                <span class="grade-val g85">8.5</span>
+                                <div style="text-align:right">
+                                    <div class="grade-price">$1,380.00</div>
+                                    <div class="grade-count">67 sold</div>
+                                </div>
+                            </div>
+                            <div class="grade-row">
+                                <span class="grade-val g8">8.0</span>
+                                <div style="text-align:right">
+                                    <div class="grade-price">$890.00</div>
+                                    <div class="grade-count">93 sold</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source Comparison -->
+                    <div class="sidebar-card">
+                        <div class="card-inner">
+                            <div class="section-title"><span class="icon">🌐</span> Cross-Market Data</div>
+
+                            <!-- Chart -->
+                            <div class="chart-container">
+                                <div class="chart-bars">
+                                    <div class="chart-bar-group">
+                                        <div class="chart-value">$18,450</div>
+                                        <div class="chart-bar"
+                                            style="height:100%;background:linear-gradient(to top, #06b6d4, #22d3ee);">
+                                        </div>
+                                        <div class="chart-label">eBay</div>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-value">$9,500</div>
+                                        <div class="chart-bar"
+                                            style="height:52%;background:linear-gradient(to top, #22c55e, #4ade80);">
+                                        </div>
+                                        <div class="chart-label">StockX</div>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-value">$12,800</div>
+                                        <div class="chart-bar"
+                                            style="height:69%;background:linear-gradient(to top, #3b82f6, #60a5fa);">
+                                        </div>
+                                        <div class="chart-label">TCGPlayer</div>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-value">$10,250</div>
+                                        <div class="chart-bar"
+                                            style="height:56%;background:linear-gradient(to top, #f97316, #fb923c);">
+                                        </div>
+                                        <div class="chart-label">PWCC</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a class="source-link stockx" href="#">
+                                <span class="source-name">StockX</span>
+                                <span class="source-price">$9,500</span>
+                            </a>
+                            <a class="source-link tcg" href="#">
+                                <span class="source-name">TCGPlayer</span>
+                                <span class="source-price">$12,800</span>
+                            </a>
+                            <a class="source-link pwcc" href="#">
+                                <span class="source-name">PWCC</span>
+                                <span class="source-price">$10,250</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN FEED -->
+                <div>
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="filter-row">
+                            <div>
+                                <div class="filter-label">Grading Service</div>
+                                <div class="filter-chips">
+                                    <div class="chip active">PSA</div>
+                                    <div class="chip active">BGS</div>
+                                    <div class="chip active">CGC</div>
+                                    <div class="chip">SGC</div>
+                                    <div class="chip">TAG</div>
+                                    <div class="chip">ACE</div>
+                                    <div class="chip">PCA</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="filter-label">Sort By</div>
+                                <div class="sort-chips">
+                                    <button class="sort-chip active">Best Value</button>
+                                    <button class="sort-chip">Price ↑</button>
+                                    <button class="sort-chip">Price ↓</button>
+                                    <button class="sort-chip">Grade ↓</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-bottom">
+                            <div class="result-count">Showing <strong>24</strong> results</div>
+                            <div class="grade-filters">
+                                <button class="grade-filter active">Any Grade</button>
+                                <button class="grade-filter">10+</button>
+                                <button class="grade-filter">9+</button>
+                                <button class="grade-filter">8+</button>
+                                <button class="grade-filter">7+</button>
+                                <button class="grade-filter">6+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Listing Cards -->
+                    <div class="listing-card arbitrage">
+                        <div class="glow-overlay"></div>
+                        <div class="listing-inner">
+                            <div class="grade-badge">
+                                <span class="grade-num" style="color:#facc15">10</span>
+                                <span class="grade-co">PSA</span>
+                            </div>
+                            <div class="listing-info">
+                                <div class="listing-badges">
+                                    <span class="badge arbitrage">⚡ Arbitrage</span>
+                                </div>
+                                <div class="listing-title">Charizard Base Set 1st Ed Holo PSA 10 Gem Mint #4</div>
+                                <div class="listing-meta">
+                                    <span>New</span>
+                                    <span>•</span>
+                                    <span>eBay</span>
+                                </div>
+                            </div>
+                            <div class="listing-right">
+                                <div class="listing-price">$8,900.00</div>
+                                <a href="#" class="deal-btn">View Deal →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-card steal">
+                        <div class="glow-overlay"></div>
+                        <div class="listing-inner">
+                            <div class="grade-badge">
+                                <span class="grade-num" style="color:#facc15">10</span>
+                                <span class="grade-co">PSA</span>
+                            </div>
+                            <div class="listing-info">
+                                <div class="listing-badges">
+                                    <span class="badge steal">🔥 Steal</span>
+                                </div>
+                                <div class="listing-title">Charizard Base Set Unlimited Holo PSA 10 GEM MINT</div>
+                                <div class="listing-meta">
+                                    <span>New</span>
+                                    <span>•</span>
+                                    <span>eBay</span>
+                                </div>
+                            </div>
+                            <div class="listing-right">
+                                <div class="listing-price">$1,850.00</div>
+                                <a href="#" class="deal-btn">View Deal →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-card">
+                        <div class="listing-inner">
+                            <div class="grade-badge">
+                                <span class="grade-num" style="color:#d1d5db">9.5</span>
+                                <span class="grade-co">BGS</span>
+                            </div>
+                            <div class="listing-info">
+                                <div class="listing-title">Charizard Base Set BGS 9.5 Gem Mint Holo 1st Edition</div>
+                                <div class="listing-meta">
+                                    <span>New</span>
+                                    <span>•</span>
+                                    <span>eBay</span>
+                                </div>
+                            </div>
+                            <div class="listing-right">
+                                <div class="listing-price">$4,200.00</div>
+                                <a href="#" class="deal-btn">View Deal →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-card">
+                        <div class="listing-inner">
+                            <div class="grade-badge">
+                                <span class="grade-num" style="color:#d1d5db">9</span>
+                                <span class="grade-co">CGC</span>
+                            </div>
+                            <div class="listing-info">
+                                <div class="listing-title">Charizard Base Set CGC 9 Mint Holo Pokemon Card 1999</div>
+                                <div class="listing-meta">
+                                    <span>New</span>
+                                    <span>•</span>
+                                    <span>eBay</span>
+                                </div>
+                            </div>
+                            <div class="listing-right">
+                                <div class="listing-price">$2,100.00</div>
+                                <a href="#" class="deal-btn">View Deal →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-card steal">
+                        <div class="glow-overlay"></div>
+                        <div class="listing-inner">
+                            <div class="grade-badge">
+                                <span class="grade-num" style="color:#fb923c">8.5</span>
+                                <span class="grade-co">PSA</span>
+                            </div>
+                            <div class="listing-info">
+                                <div class="listing-badges">
+                                    <span class="badge steal">🔥 Steal</span>
+                                </div>
+                                <div class="listing-title">Charizard Base Set PSA 8.5 NM-MT+ Holo Card #4/102</div>
+                                <div class="listing-meta">
+                                    <span>New</span>
+                                    <span>•</span>
+                                    <span>eBay</span>
+                                </div>
+                            </div>
+                            <div class="listing-right">
+                                <div class="listing-price">$975.00</div>
+                                <a href="#" class="deal-btn">View Deal →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-card">
+                        <div class="listing-inner">
+                            <div class="grade-badge">
+                                <span class="grade-num" style="color:#fb923c">8</span>
+                                <span class="grade-co">BGS</span>
+                            </div>
+                            <div class="listing-info">
+                                <div class="listing-title">Charizard Base Set Shadowless BGS 8 NM-MT Holo 1st Print
+                                </div>
+                                <div class="listing-meta">
+                                    <span>New</span>
+                                    <span>•</span>
+                                    <span>eBay</span>
+                                </div>
+                            </div>
+                            <div class="listing-right">
+                                <div class="listing-price">$3,200.00</div>
+                                <a href="#" class="deal-btn">View Deal →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>© 2026 PokeAggregator • Multi-Source Market Intelligence</div>
+        <div style="margin-top:0.5rem">
+            <a href="#">API Data</a>
+            <a href="#">Community</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+        </div>
+    </footer>
+
+    <script>
+        function showView(view) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('view-' + view).classList.add('active');
+            document.getElementById('tab-' + view).classList.add('active');
+        }
+
+        // Chip toggle
+        document.querySelectorAll('.filter-chips .chip').forEach(chip => {
+            chip.addEventListener('click', () => chip.classList.toggle('active'));
+        });
+        document.querySelectorAll('.sort-chips .sort-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.sort-chips .sort-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            });
+        });
+        document.querySelectorAll('.grade-filters .grade-filter').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.grade-filters .grade-filter').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
