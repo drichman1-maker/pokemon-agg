@@ -3,7 +3,7 @@ import axios from 'axios';
 import './index.css';
 import PriceComparisonChart from './PriceComparisonChart';
 
-const API_BASE_URL = 'http://127.0.0.1:5000';
+const API_BASE_URL = 'https://pokemon-agg.onrender.com';
 
 function App() {
     const [query, setQuery] = useState('');

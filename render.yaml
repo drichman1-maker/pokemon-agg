@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: pokemon-agg-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: EBAY_APP_ID
+        value: DouglasR-prod-PRD-94ec29b67-d8075fb2
+      - key: EBAY_DEV_ID
+        value: 7c0ce1e3-ae52-4a59-8e9e-73d98d296483
+      - key: EBAY_CERT_ID
+        value: SBX-4eaa38edad9d-24cd-4a09-9988-ba39
+      - key: POKEMONTCG_API_KEY
+        value: ""
+    repo: https://github.com/drichman1-maker/pokemon-agg
