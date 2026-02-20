@@ -3,7 +3,7 @@ import axios from 'axios';
 import './index.css';
 import PriceComparisonChart from './PriceComparisonChart';
 
-const API_BASE_URL = 'https://pokemon-agg.onrender.com';
+const API_BASE_URL = 'https://price-aggregator-api-production.up.railway.app';
 
 function App() {
     const [query, setQuery] = useState('');

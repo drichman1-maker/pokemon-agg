@@ -6,6 +6,12 @@ Set your API credentials here or use environment variables.
 
 import os
 
+# Unified Backend API Base URL
+API_BASE_URL = os.environ.get(
+    'API_BASE_URL',
+    'https://price-aggregator-api-production.up.railway.app'
+)
+
 # Pokemon TCG API Key (optional but recommended for higher rate limits)
 # Get your key at: https://dev.pokemontcg.io/
 POKEMONTCG_API_KEY = os.environ.get('POKEMONTCG_API_KEY', '')

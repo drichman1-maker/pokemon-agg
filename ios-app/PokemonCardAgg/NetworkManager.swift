@@ -27,7 +27,7 @@ class NetworkManager: ObservableObject {
     // Base URL for the Flask API
     // For iOS Simulator: use http://127.0.0.1:5000
     // For physical device: use your computer's local IP (e.g., http://192.168.1.100:5000)
-    private let baseURL = "http://127.0.0.1:5000"
+    private let baseURL = "https://price-aggregator-api-production.up.railway.app"
     
     @Published var isLoading = false
     @Published var errorMessage: String?

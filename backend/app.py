@@ -13,8 +13,15 @@ from stockx_scraper import get_stockx_data
 from tcgplayer_analyst import get_tcgplayer_data
 from pwcc_agent import get_pwcc_data
 
+# Import category router and config
+from config import API_BASE_URL
+from routers.pokemon_cards import pokemon_cards_bp
+
 app = Flask(__name__)
 CORS(app)
+
+# Register category router Blueprint
+app.register_blueprint(pokemon_cards_bp)
 
 # Configure API keys
 POKEMONTCG_API_KEY = os.environ.get('POKEMONTCG_API_KEY', '')
